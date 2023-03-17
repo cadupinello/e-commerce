@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+.idea
+.vscode
+.vscode-oss
+.vscode-insiders
+.vscode-test-data
+.env
