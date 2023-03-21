@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
 
 //configure env
@@ -15,16 +17,18 @@ connectDB();
 //configure express
 const app = express();
 
-// cors
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 
 //middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+// cors
+app.use(cors({ credentials: true, origin: "http://localhost:5173"  }));
 app.use(morgan("dev"));
 
 //routes
 app.use("/api", authRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/product', productRoutes);
 
 // rest api
 app.get("/api", (req, res) => {
@@ -32,7 +36,7 @@ app.get("/api", (req, res) => {
 })
 
 //listen to port
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server is running on ${process.env.DEV_MODE} mode on port ${port}`.bgYellow.bold);
