@@ -16,7 +16,6 @@ export const getCategories = async () => {
 }
 
 export const registerCategories = async (data, token) => {
-  console.log(data);
   const config = requestConfig("POST", data, token);
 
     try {
@@ -32,9 +31,41 @@ export const registerCategories = async (data, token) => {
     }
 }
 
+
+export const updateCategories = async (data, token) => {
+  const config = requestConfig("PUT", data, token);
+  try {
+    const res = await fetch(`${api}/category/update-category/${data.id}`, config)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+    
+    return res;
+
+  }catch(error){
+    console.log(error)
+  }
+}
+
+export const deleteCategories = async (id, token) => {
+  console.log(id, token)
+  const config = requestConfig("DELETE", id, token);
+  try {
+    const res = await fetch(`${api}/category/delete-category/${id}`, config)
+    .then(res => res.json())
+    .catch(err => console.log(err));
+    
+    return res;
+
+  }catch(error){
+    console.log(error)
+  }
+}
+
 const categoryServices = {
   getCategories,
-  registerCategories
+  registerCategories,
+  updateCategories,
+  deleteCategories
 }
 
 export default categoryServices;

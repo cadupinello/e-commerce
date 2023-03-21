@@ -1,5 +1,4 @@
 import React, { useState, useEffect} from 'react'
-import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 
 // reducer login user
@@ -71,8 +70,8 @@ const Login = () => {
               />
             </div>
             {messageError(isError)}
-            {!isLoading ? <Button type="submit" msg="Cadastrar" color="info" /> : 
-            <Button disabled msg="Cadastrando..." color="info" />
+            {!isLoading ? <button type="submit" msg="Cadastrar" color="info" /> : 
+            <button disabled msg="Cadastrando..." color="info" />
             }
           </form>
         </div>

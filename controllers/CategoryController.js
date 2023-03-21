@@ -21,10 +21,12 @@ export const createCategory = async (req, res) => {
       });
     }
 
-    const newCategory = new categoryModel.create({
+    const newCategory = await categoryModel.create({
       name,
       slug: slugify(name)
     })
+
+    console.log(newCategory);
 
     res.status(201).json(newCategory);
 
@@ -141,6 +143,7 @@ export const deleteCategory = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Categoria deletada com sucesso!',
+      id: category._id
     });
 
   }catch(err){
