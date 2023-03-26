@@ -3,7 +3,6 @@ import { Modal } from 'antd'
 
 import Layout from '../../components/Layout';
 import MenuDashboard from '../../components/MenuDashboard';
-import  { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories, register, update, deleteCategory, resetMessage } from '../../slices/category';
@@ -21,7 +20,7 @@ const Category = () => {
  
   const dispatch = useDispatch();
 
-  const { categories, isError, message } = useSelector(state => state.category);
+  const { categories, isError, message, isLoading } = useSelector(state => state.category);
 
   // get all categories
   useEffect(() => {
@@ -114,6 +113,7 @@ const Category = () => {
             setValue={setCategoryName}
             placeholder="Nome da categoria"
           />
+          {isLoading && <p>Carregando...</p>}
           {message && 
             <p>{message}</p>
           }

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Form = ({ handleSubmit, value, setValue, placeholder }) => {
+
   return (
     <form onSubmit={handleSubmit} className="input-group mb-3">
       <span className='input-group mb-3'>Item</span>

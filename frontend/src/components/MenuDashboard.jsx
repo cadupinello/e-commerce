@@ -23,6 +23,11 @@ const MenuDashboard = () => {
                 </NavLink>
               </li>
               <li className="list-group-item">
+                <NavLink to='/dashboard/admin/all-products'>
+                  Produtos
+                </NavLink>
+              </li>
+              <li className="list-group-item">
                 <NavLink to='/dashboard/admin/create-users'>
                   Usúarios
                 </NavLink>

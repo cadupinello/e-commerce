@@ -28,8 +28,10 @@ export const login = async (data) => {
     .then(res => res.json())
     .catch(err => console.log(err))
 
-    if(res) {
+    if(res.status === 200) {
       localStorage.setItem("user", JSON.stringify(res))
+    }else {
+      localStorage.removeItem("user")
     }
 
     return res;

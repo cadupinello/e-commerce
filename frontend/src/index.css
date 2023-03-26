@@ -57,3 +57,36 @@ main {
   color: white;
   padding: 20px 0px;
 }
+
+.money {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.money:hover {
+  font-size: 22px;
+  transition: 0.5s ease-in-out;
+}
+
+.buttonAddCart {
+  background-color: #49be25 !important;
+  color: #fff !important;
+  padding: 0.5rem !important;
+  font-size: 16px;
+  font-weight: bold;
+  border: none !important;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+}
+
+.buttonAddCart:hover {
+  background-color: #3e8e3e !important;
+  transition: 0.3s ease-in-out;
+}
+
+.buttonAddCart svg {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}

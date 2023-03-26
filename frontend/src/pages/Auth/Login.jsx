@@ -12,32 +12,36 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const { isLoading, isError } = useSelector(state => state.auth);
+  const { isLoading, isError, message } = useSelector(state => state.auth);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    try {
+      e.preventDefault()
     
-    const user = {
-      email,
-      password,
-    };
+      const user = {
+        email,
+        password,
+      };
 
-    dispatch(login(user))
-
+      dispatch(login(user))
+      
+    }catch(err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
     dispatch(reset())
   }, [dispatch])
 
-  const messageError = (isError) => {
-    if (isError) {
-        return (
-          <div className="alert alert-danger" role="alert">
-            {isError}
-          </div>
-        )
-    }
+  const messageError = () => {
+      if(isError) {
+        return <div className="alert alert-danger">{message}</div>
+      }
+      setTimeout(() => {
+        dispatch(reset())
+      },3000)
+
   }
 
   return (
@@ -70,8 +74,8 @@ const Login = () => {
               />
             </div>
             {messageError(isError)}
-            {!isLoading ? <button type="submit" msg="Cadastrar" color="info" /> : 
-            <button disabled msg="Cadastrando..." color="info" />
+            {!isLoading ? <button type="submit" className='btn btn-primary'>Cadastrar</button> : 
+            <button className='btn btn-primary' disabled >Cadastrando...</button>
             }
           </form>
         </div>

@@ -6,7 +6,7 @@ import { logout, reset } from '../slices/Auth'
 import { useAuth } from '../Hooks/useAuth';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [query , setQuery] = useState("");
   const { user } = useSelector((state) => state.auth);
   const { auth, admin } = useAuth();
   
@@ -19,15 +19,31 @@ const Navbar = () => {
     navigate('/login')
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+   
+    if(query) {
+      return navigate(`/search?q=${query}`)
+    }
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link className='me-5'>
+          <Link className='me-5' to={"/"}>
             <h4>E-Commerce</h4>
           </Link>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto mb-2 mb-lg-0">
+              <form onSubmit={handleSearch}>
+                <input
+                  type="text"
+                  className="form-control me-2"
+                  placeholder="Pesquisar"
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </form>
               {auth ? (
                 <>
                   <li className="nav-item">

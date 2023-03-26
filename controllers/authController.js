@@ -125,20 +125,20 @@ export const loginController = async (req, res) => {
 
     //validation
     if (!email || email === "" || !password || password === "") {
-      return res.status(400).send({ success: false, msg: "Email e senha são obrigatórios!" });
+      return res.status(422).send({ success: false, msg: "Email e senha são obrigatórios!" });
     }
 
     // check user exists
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(400).send({ success: false, msg: "Usuário não encontrado!" });
+      return res.status(422).send({ success: false, msg: "Usuário não encontrado!" });
     }
 
     // check password
     const match = await comparePassword(password, user.password);
 
     if (!match) {
-      return res.status(400).send({ success: false, msg: "Senha incorreta!" });
+      return res.status(422).send({ success: false, errors: ["Senha incorreta!"] });
     }
 
     // create token

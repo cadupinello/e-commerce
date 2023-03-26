@@ -18,6 +18,10 @@ import Profile from './pages/User/Profile';
 import Product from './pages/Admin/Product';
 import Category from './pages/Admin/Category';
 import Users from './pages/Admin/Users';
+import AllProducts from './pages/Admin/AllProducts';
+import UpdateProduct from './pages/Admin/UpdateProduct';
+import Search from './pages/Search';
+import ProductDetails from './pages/ProductDetails';
 
 
 function App() {
@@ -31,7 +35,7 @@ function App() {
     <div>
       <Router>
         <Routes>
-        <Route path="/" element={auth ? <HomePage /> : <Navigate to="/login" /> } />
+        <Route path="/" element={<HomePage />} />
         <Route path="/dashboard/user" element={auth ?  <Dashboard /> : <Navigate to='/' />}  />
         <Route path="/dashboard/user/orders" element={auth ?  <Orders /> : <Navigate to='/' />}  />
         <Route path="/dashboard/user/profile" element={auth ?  <Profile /> : <Navigate to='/' />}  />
@@ -39,12 +43,16 @@ function App() {
         <Route path="/dashboard/admin" element={admin ?  <AdminDashboard /> : <Navigate to='/' />}  />
         <Route path="/dashboard/admin/create-category" element={auth && admin ?  <Category /> : <Navigate to='/login' />}  />
         <Route path="/dashboard/admin/create-product" element={admin ?  <Product /> : <Navigate to='/login' />}  />
+        <Route path="/dashboard/admin/product/:slug" element={admin ?  <UpdateProduct /> : <Navigate to='/login' />}  />
         <Route path="/dashboard/admin/users" element={admin ?  <Users /> : <Navigate to='/login' />}  />
-        
+        <Route path="/dashboard/admin/all-products" element={admin ?  <AllProducts /> : <Navigate to='/login' />}  />
+
         <Route path="/register" element={!auth ? <Register /> : <Navigate to='/' />} />
         <Route path="/login" element={!auth ? <Login /> : <Navigate to='/' />} />
         <Route path='/forgot-password' element={!auth ? <ForgotPassword /> : <Navigate to='/' />}  />
         
+        <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="search" element={<Search />} />
         <Route path="/about" element={<About /> }  />
         <Route path="/contact" element={<Contact /> }  />
         <Route path="/policy" element={<Policy /> }  />
