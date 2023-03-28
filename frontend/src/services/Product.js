@@ -91,13 +91,26 @@ export const searchProducts = async (search) => {
   }
 }
 
+export const similarProducts = async (pid, cid) => {
+  try {
+    const res = await axios.get(`${api}/product/related-products/${pid}/${cid}`)
+    .then(res => res.data)
+    .catch(err => err.response.data);
+
+    return res;
+  }catch(err) {
+    console.log(err);
+  }
+}
+
 export const productServices = {
   registerProduct,
   getAllProducts,
   getSingleProducts,
   updateProduct,
   deleteProduct,
-  searchProducts
+  searchProducts,
+  similarProducts
 }
 
 export default productServices;

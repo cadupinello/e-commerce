@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-const Layout = ({ children, title, description, keywords, author }) => {
+const Layout = ({ children, title, description, keywords, author, cartData }) => {
   return (
     <>
       <Helmet>
@@ -13,8 +13,8 @@ const Layout = ({ children, title, description, keywords, author }) => {
         <meta name="author" content={author} />
         <title>{title}</title>
       </Helmet>
-      <Navbar />
-      <main style={{minHeight: "80vh"}} >
+      <Navbar cartData={cartData} />
+      <main style={{minHeight: "80vh"}}>
         {children}
       </main>
       <Footer/>

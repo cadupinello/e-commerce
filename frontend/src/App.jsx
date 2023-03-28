@@ -22,6 +22,7 @@ import AllProducts from './pages/Admin/AllProducts';
 import UpdateProduct from './pages/Admin/UpdateProduct';
 import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
+import CartPage from './pages/CartPage';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <Router>
         <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path='/cart' element={<CartPage />} />
         <Route path="/dashboard/user" element={auth ?  <Dashboard /> : <Navigate to='/' />}  />
         <Route path="/dashboard/user/orders" element={auth ?  <Orders /> : <Navigate to='/' />}  />
         <Route path="/dashboard/user/profile" element={auth ?  <Profile /> : <Navigate to='/' />}  />

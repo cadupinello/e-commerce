@@ -6,21 +6,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { api } from '../utils/Config';
 import { Checkbox, Radio } from 'antd';
 import { Prices } from '../components/Prices';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../Hooks/useCart';
 import axios from 'axios';
 import { IoCartSharp } from 'react-icons/io5';
 
 const HomePage = () => {
+  const { cartData, addItemToCart } = useCart();
   const [product, setProduct] = useState([]);
-  const [category, setCategory] = useState();
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(1);
+  const [quantity, setQuantity] = useState();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { products, isLoading } = useSelector((state) => state.product);
+  const { user } = useSelector((state) => state.auth);
   const { categories, isLoading: loading } = useSelector((state) => state.category);
 
   const getTotal = async () => {
@@ -103,9 +107,13 @@ const HomePage = () => {
     }
   }
 
+  const handleCart = (product) => {
+    addItemToCart(product);
+  }
+
   return (
     <>
-      <Layout title={"All Products - Best offers"} >
+      <Layout title={"All Products - Best offers"} cartData={cartData}>
         <div className="row mt-3">
           <div className="col-md-2">
             <h4 className='text-center'>Filtre Por Categorias</h4>
@@ -137,26 +145,40 @@ const HomePage = () => {
             <h1 className='text-center'>All Products</h1>
             <div className="d-flex flex-wrap">    
                   {product.length > 0 && product.map((p) => (
-                    <div className="card m-2" style={{width: "15rem"}}>
-                      <Link to={`/product/${p.slug}`}>
+                    <div className="card m-2" style={{width: "15rem"}} key={p._id}>
+                      <button onClick={() => navigate(`/product/${p.slug}`)}>
                         <img 
                           src={`${api}/product/product-photo/${p._id}`} 
                           alt={p.name} 
                           className="card-img-top"  
                         />
-                      </Link>
+                      </button>
                       <div className="card-body">
                         <h6 className="card-title">{p.name}</h6>
+                        <input type="number" value={quantity || p.quantity} onChange={(e) => setQuantity(e.target.value)} />
                         <p className="card-text money">
                           {p.price.toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
                           })  }
                         </p>
-                        <button className="buttonAddCart">
+                        {user ? (
+                          <button 
+                          className="buttonAddCart"
+                          onClick={() => handleCart(p)}
+                          >
                           <IoCartSharp style={{marginRight: "5px"}}/> 
                           Comprar
                         </button>
+                        ): (
+                          <button 
+                          className="buttonAddCart"
+                          onClick={() => navigate("/login")}
+                          >
+                          <IoCartSharp style={{marginRight: "5px"}}/> 
+                          Comprar
+                        </button>
+                        )}
                       </div>
                     </div>
                    ))

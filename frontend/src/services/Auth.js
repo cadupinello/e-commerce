@@ -28,12 +28,8 @@ export const login = async (data) => {
     .then(res => res.json())
     .catch(err => console.log(err))
 
-    if(res.status === 200) {
-      localStorage.setItem("user", JSON.stringify(res))
-    }else {
-      localStorage.removeItem("user")
-    }
-
+    localStorage.setItem("user", JSON.stringify(res))
+    
     return res;
 
   }catch(error) {
@@ -43,6 +39,7 @@ export const login = async (data) => {
 
 export const logout = async () => {
   localStorage.removeItem("user")
+  localStorage.removeItem("cart")
 }
 
 export const forgotPassword = async (data) => {

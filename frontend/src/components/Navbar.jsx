@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { IoCart, IoLogOut, IoHome, IoPerson } from 'react-icons/io5'
 
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, reset } from '../slices/Auth'
 import { useAuth } from '../Hooks/useAuth';
+import { Badge } from 'antd';
 
-const Navbar = () => {
+const Navbar = ({cartData}) => {
   const [query , setQuery] = useState("");
   const { user } = useSelector((state) => state.auth);
   const { auth, admin } = useAuth();
@@ -21,11 +23,16 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+
    
     if(query) {
       return navigate(`/search?q=${query}`)
     }
   }
+
+  useEffect(() => {
+    console.log(cartData);
+  }, [cartData])
 
   return (
     <>
@@ -47,18 +54,15 @@ const Navbar = () => {
               {auth ? (
                 <>
                   <li className="nav-item">
-                    <NavLink className="nav-link" to="/">Home</NavLink>
+                    <NavLink className="nav-link" to="/"><IoHome style={{width: "25px", height: "25px"}}/></NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/category">Categoria</NavLink>
-                  </li>
-                {user && (
-                  <li className="nav-item">
+                  <li>
                     <NavLink className="nav-link" to="/cart">
-                      Cart(0)
+                      <Badge count={cartData && cartData.length || 0}>
+                        <IoCart style={{width: "25px", height: "25px"}} />
+                      </Badge>
                     </NavLink>
                   </li>
-              )}
                 </>
               ): (
                 <>
@@ -72,34 +76,23 @@ const Navbar = () => {
               )
               }
               {user && (
-                <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Drop
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
                   {admin ? (
                     <>
-                      <li className='dropdown-item'>
-                        <NavLink to='/dashboard/admin'>Dashboard</NavLink>
-                      </li>
+                      <NavLink className='nav-link' to='/dashboard/admin'><IoPerson style={{width: "25px", height: "25px"}}/></NavLink>
                     </>
                   )
                   : (
                     <>
-                      <li className='dropdown-item'>
-                        <NavLink to='/dashboard/user'>Dashboard</NavLink>
-                      </li>
+                      <NavLink className='nav-link' to='/dashboard/user'><IoPerson style={{width: "25px", height: "25px"}}/></NavLink>
                     </>
                   )}
-                  {user && (
-                      <li className='dropdown-item'>
-                        <button className='btn btn-sm btn-outline-danger' onClick={handleLogout}>
-                           Logout
-                        </button>
-                      </li>
+                </li>
                   )}
-                </ul>
-              </li>
+              {user && (
+                <button className='nav-link btn' onClick={handleLogout}>
+                  <IoLogOut style={{width: "25px", height: "25px"}}/>
+                </button>
               )}
             </ul>
           </div>

@@ -23,7 +23,6 @@ const Search = () => {
   const { products, isLoading } = useSelector(state => state.product);
 
   useEffect(() => {
-    console.log(search)
     if(search) {
       dispatch(searchProduct(search))
     }else {

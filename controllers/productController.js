@@ -100,7 +100,7 @@ export const getSingleProducts = async (req, res) => {
   try {
 
     const { slug } = req.params;
-    const product = await productModel.findOne({ slug }).populate("category");
+    const product = await productModel.findOne({ slug }).select("-photo").populate("category");
 
     if(!product) {
       return res.status(404).json({
@@ -236,7 +236,6 @@ export const updateProduct = async (req, res) => {
 export const productFiltersController = async (req, res) => {
   try {
     const {checked, radio} = req.body;
-    console.log(checked);
     
     let args = {};
 
@@ -320,6 +319,32 @@ export const productSearchController = async (req, res) => {
       success: false,
       error,
       message: "Error in Search",
+    });
+  }
+}
+
+export const realtedProductController = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    const products = await productModel.find({
+      category: cid,
+      _id: { $ne: pid },
+    })
+    .select("-photo")
+    .limit(3)
+    .populate("category");
+
+    res.status(200).send({
+      success: true,
+      products,
+    })
+  
+  }catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      error,
+      message: "Error in Related Products",
     });
   }
 }

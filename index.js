@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 import cors from "cors";
 
 //configure env
@@ -29,6 +30,7 @@ app.use(morgan("dev"));
 app.use("/api", authRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/product', productRoutes);
+app.use('/api', paymentRoutes);
 
 // rest api
 app.get("/api", (req, res) => {

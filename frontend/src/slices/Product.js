@@ -91,6 +91,16 @@ export const searchProduct = createAsyncThunk(
   }
 )
 
+export const getRelatedProducts = createAsyncThunk(
+  "product/related-products",
+
+  async (pid, cid) => {
+    const data = await productServices.similarProducts(pid, cid)
+
+    return data;
+  }
+)
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -183,6 +193,16 @@ export const productSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = null;
+      state.products = action.payload.products;
+    })
+    .addCase(getRelatedProducts.pending, (state) => {
+      state.isLoading = true;
+      state.isError = false;
+      state.isSuccess = false;
+    })
+    .addCase(getRelatedProducts.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
       state.products = action.payload.products;
     })
   },
