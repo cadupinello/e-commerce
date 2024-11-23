@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from 'react'
-import Layout from '../../components/Layout'
+import React, { useState, useEffect } from 'react'
+import Layout from '../../components/layout'
 
 // reducer register user
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,14 +13,14 @@ const Register = () => {
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
   const [answer, setAnswer] = useState('')
-
+  console.log('teste')
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector(state => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    
+
     const user = {
       name,
       email,
@@ -40,11 +40,11 @@ const Register = () => {
 
   const messageError = (isError) => {
     if (isError) {
-        return (
-          <div className="alert alert-danger" role="alert">
-            {isError}
-          </div>
-        )
+      return (
+        <div className="alert alert-danger" role="alert">
+          {isError}
+        </div>
+      )
     }
   }
 
@@ -54,56 +54,56 @@ const Register = () => {
         <div className='AlignDivs'>
           <h3 className='m-3 title'>Register</h3>
           <h3 className='subtitle'>Crie sua conta</h3>
-          <form onSubmit={handleSubmit} className='form-control' style={{maxWidth: "500px"}}>
+          <form onSubmit={handleSubmit} className='form-control' style={{ maxWidth: "500px" }}>
             <div className='form-group mb-3'>
-                <label htmlFor='name'>Nome</label>
-                <input 
-                  type='text' 
-                  id='name' 
-                  className='form-control' 
-                  placeholder='Digite seu nome' 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+              <label htmlFor='name'>Nome</label>
+              <input
+                type='text'
+                id='name'
+                className='form-control'
+                placeholder='Digite seu nome'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className='form-group mb-3 mb-3'>
               <label htmlFor='email'>Email</label>
-              <input 
-                type='email' 
-                id='email' 
-                className='form-control' 
-                placeholder='Digite seu email' 
+              <input
+                type='email'
+                id='email'
+                className='form-control'
+                placeholder='Digite seu email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className='form-group mb-3'>
               <label htmlFor='password'>Senha</label>
-              <input 
-                type='password' 
-                id='password' 
-                className='form-control' 
-                placeholder='Digite sua senha' 
+              <input
+                type='password'
+                id='password'
+                className='form-control'
+                placeholder='Digite sua senha'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className='form-group mb-3'>
               <label htmlFor='telefone'>Telefone</label>
-              <input 
-                type='text' 
-                id='telefone' 
-                className='form-control' 
-                placeholder='Digite seu telefone' 
+              <input
+                type='text'
+                id='telefone'
+                className='form-control'
+                placeholder='Digite seu telefone'
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             <div className='form-group mb-3'>
               <label htmlFor='endereco'>Endereço</label>
-              <input 
-                type='text' 
-                id='endereco' 
+              <input
+                type='text'
+                id='endereco'
                 className='form-control'
                 placeholder='Digite seu endereço'
                 value={address}
@@ -112,18 +112,18 @@ const Register = () => {
             </div>
             <div className='form-group mb-3'>
               <label htmlFor='answer'>Pergunta de segurança</label>
-              <input 
+              <input
                 type='text'
-                id='pergunta' 
-                className='form-control' 
+                id='pergunta'
+                className='form-control'
                 placeholder='Qual é o seu jogo favorito?'
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
               />
             </div>
             {messageError(isError)}
-            {!isLoading ? <button type="submit" msg="Cadastrar" color="info" /> : 
-            <button disabled msg="Cadastrando..." color="info" />
+            {!isLoading ? <button type="submit" msg="Cadastrar" color="info" /> :
+              <button disabled msg="Cadastrando..." color="info" />
             }
           </form>
         </div>

@@ -1,25 +1,25 @@
-export const api = "http://localhost:8080/api";
+export const api = "http://localhost:3001/api";
 
-export const requestConfig = ( method, data, token = null) => {
+export const requestConfig = (method, data, token = null) => {
   let config
-  
-  if(method === "DELETE") {
+
+  if (method === "DELETE") {
     config = {
       method: method,
       headers: {},
     }
 
-  }else {
+  } else {
     config = {
-      method, 
+      method,
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
       }
     }
-  } 
+  }
 
-  if(token) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
 
@@ -27,7 +27,7 @@ export const requestConfig = ( method, data, token = null) => {
 }
 
 export const reqConfig = (token) => {
-  if(token) {
+  if (token) {
     return {
       headers: {
         Authorization: `Bearer ${token}`

@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import Layout from '../../components/Layout';
-import MenuDashboard from '../../components/MenuDashboard';
+import React, { useState, useEffect } from 'react'
+import Layout from '../../components/layout';
+import MenuDashboard from '../../components/menuDashboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from '../../slices/category';
 import { registerProduct, resetMessage } from '../../slices/Product';
@@ -15,7 +15,7 @@ const Product = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [photo, setPhoto] = useState("");
-  const [shipping, setShipping] = useState("");
+  const [shipping, setShipping] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ const Product = () => {
   // get all categories
   useEffect(() => {
     dispatch(getCategories());
-  },[ dispatch ]);
+  }, [dispatch]);
 
   const resetComponentMessage = () => {
     setTimeout(() => {
@@ -37,23 +37,23 @@ const Product = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    
+
     try {
 
-      const formdata = new FormData();
-      formdata.append('name', name);
-      formdata.append('description', description);
-      formdata.append('price', price);
-      formdata.append('quantity', quantity);
-      formdata.append('category', category);
-      formdata.append('photo', photo);
-      formdata.append('shipping', shipping);
+      const product = {
+        name,
+        description,
+        price,
+        quantity,
+        category,
+        shipping,
+      }
 
       resetComponentMessage();
 
-      dispatch(registerProduct(formdata));
+      dispatch(registerProduct(product));
 
-    }catch(error) {
+    } catch (error) {
       console.log(error);
     }
 
@@ -69,7 +69,7 @@ const Product = () => {
           <div className="col-md-9">
             <h1>Criar Produtos</h1>
             <div className="m-1 w-75">
-              <Select 
+              <Select
                 bordered={false}
                 placeholder="Selecione uma categoria"
                 size="large"
@@ -86,7 +86,7 @@ const Product = () => {
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
                   {photo ? photo.name : "Escolha uma foto"}
-                  <input 
+                  <input
                     type="file"
                     name="photo"
                     accept="image/*"
@@ -98,27 +98,27 @@ const Product = () => {
               <div className="mb-3">
                 {photo && (
                   <div className="text-center">
-                    <img 
+                    <img
                       src={URL.createObjectURL(photo)}
-                      alt="foto do produto" 
+                      alt="foto do produto"
                       height={"200px"}
-                      className="img img-responsive"   
+                      className="img img-responsive"
                     />
                   </div>
                 )}
               </div>
               <div className="mb-3">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={name}
                   placeholder="Nome do produto"
                   className='form-control'
-                  onChange={(e) => setName(e.target.value)} 
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div className="mb-3">
-                <textarea 
-                  type="text" 
+                <textarea
+                  type="text"
                   value={description}
                   placeholder="Descrição do produto"
                   className='form-control'
@@ -126,21 +126,21 @@ const Product = () => {
                 />
               </div>
               <div className="mb-3">
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={price}
                   placeholder="Preço do produto"
                   className='form-control'
-                  onChange={(e) => setPrice(e.target.value)} 
+                  onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
               <div className="mb-3">
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={quantity}
                   placeholder="Quantidade do produto"
                   className='form-control'
-                  onChange={(e) => setQuantity(e.target.value)} 
+                  onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
               <div className="mb-3">
@@ -152,18 +152,18 @@ const Product = () => {
                   className="form-select mb-3"
                   onChange={(value) => setShipping(value)}
                 >
-                  <Option value="1">Ativo</Option>
-                  <Option value="0">Inativo</Option>
+                  <Option value={true}>Ativo</Option>
+                  <Option value={false}>Inativo</Option>
                 </Select>
               </div>
               <div className="mb-3">
                 {!isError ? (
-                    <p className='text-success'>{message}</p>
-                  ) : (
-                    <p className='text-danger'>{message}</p>
+                  <p className='text-success'>{message}</p>
+                ) : (
+                  <p className='text-danger'>{message}</p>
                 )
                 }
-                {isLoading ? ( 
+                {isLoading ? (
                   <button className='btn btn-primary' disabled>Cadastrando...</button>
                 ) : (
                   <button type='submit' className='btn btn-outline-primary' onClick={handleCreate}>Cadastrar</button>
