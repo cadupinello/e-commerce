@@ -101,9 +101,7 @@ const Category = () => {
     <Layout>
       <div className="container-fluid m-3 p-3 dashboard">
         <div className="row">
-          <div className='col-md-3'>
-            <MenuDashboard />
-          </div>
+          <MenuDashboard />
           <div className='col-md-9'>
             <h1>Adicionar nova categoria</h1>
             <div className='p-3 w-50'>
