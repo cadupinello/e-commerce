@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IoCart, IoLogOut, IoHome, IoPerson } from 'react-icons/io5'
+import { IoCart, IoLogOut, IoHome, IoPerson, IoLogIn } from 'react-icons/io5'
 
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -72,13 +72,11 @@ const Navbar = ({ cartData }) => {
           ) : (
             <>
               <li>
-                <Tooltip title="registrar-se">
-                  <Styled.NavItem to="/register">Registrar</Styled.NavItem>
-                </Tooltip>
-              </li>
-              <li>
                 <Tooltip title="Login">
-                  <Styled.NavItem to="/login">Login</Styled.NavItem>
+                  <Styled.NavItem to="/login">
+                    <IoPerson style={{ width: "25px", height: "25px" }} />
+                    Entrar/Cadastrar
+                  </Styled.NavItem>
                 </Tooltip>
               </li>
             </>

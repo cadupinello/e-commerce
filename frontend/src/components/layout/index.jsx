@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import Navbar from '../navbar';
 import Sidebar from '../sidebar';
 import * as Styled from './styled'
+
 const Layout = ({ children, title, description, keywords, author, cartData }) => {
   return (
     <Styled.Container>

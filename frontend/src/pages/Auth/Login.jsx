@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Layout from '../../components/layout'
 
-// reducer login user
 import { useDispatch, useSelector } from 'react-redux';
 
 import { login, reset } from '../../slices/Auth'
+
+import * as Styled from './styled'
+import { Link } from 'react-router-dom';
+import { IoRefresh, IoSend } from 'react-icons/io5';
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -47,38 +50,48 @@ const Login = () => {
   return (
     <>
       <Layout>
-        <div className='AlignDivs'>
-          <h3 className='m-3 title'>E-Commerce</h3>
-          <h3 className='subtitle'>Faça Login</h3>
-          <form onSubmit={handleSubmit} className='form-control' style={{ maxWidth: "500px" }}>
-            <div className='form-group mb-3 mb-3'>
-              <label htmlFor='email'>Email</label>
-              <input
-                type='email'
-                id='email'
-                className='form-control'
-                placeholder='Digite seu email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3'>
-              <label htmlFor='password'>Senha</label>
-              <input
-                type='password'
-                id='password'
-                className='form-control'
-                placeholder='Digite sua senha'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            {messageError(isError)}
-            {!isLoading ? <button type="submit" className='btn btn-primary'>Cadastrar</button> :
-              <button className='btn btn-primary' disabled >Cadastrando...</button>
-            }
-          </form>
-        </div>
+        <Styled.Container>
+          <Styled.Content>
+            <h4>Login</h4>
+            <Styled.Form>
+              <Styled.FormControl>
+                <label htmlFor='email'>Email</label>
+                <Styled.Input
+                  type='email'
+                  id='email'
+                  className='form-control'
+                  placeholder='Digite seu email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Styled.FormControl>
+              <Styled.FormControl>
+                <label htmlFor='password'>Senha</label>
+                <Styled.Input
+                  type='password'
+                  id='password'
+                  className='form-control'
+                  placeholder='Digite sua senha'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Styled.FormControl>
+              {messageError(isError)}
+              <Styled.Button
+                type="submit"
+                onClick={handleSubmit}
+                disabled={isLoading}
+                color='primary'
+                variant="contained"
+              >
+                {isLoading ? "Carregando..." : "Entrar"}
+              </Styled.Button>
+            </Styled.Form>
+            <Styled.LinkHeader to="/register">
+              REGISTRAR-SE
+            </Styled.LinkHeader>
+          </Styled.Content>
+        </Styled.Container>
       </Layout>
     </>
   )

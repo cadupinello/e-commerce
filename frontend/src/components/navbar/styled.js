@@ -7,30 +7,40 @@ export const Nav = styled("nav")({
   height: "fit-content",
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   padding: "24px",
   boxShadow: 'none',
-  backgroundColor: '#032839',
+  backgroundColor: '#099ee4',
   color: '#fff',
 
   ul: {
-    width: "30%",
-    height: "fit-content",
+    width: "100%",
+    maxWidth: "600px",
     display: "flex",
     justifyContent: "flex-end",
+    alignItems: "center",
+    padding: 0,
+    margin: 0,
   },
 
   li: {
-    height: "fit-content",
+    marginRight: "1rem",
     listStyle: "none",
-    marginLeft: "1rem",
     cursor: "pointer",
 
     a: {
+      fontSize: "14px",
+      fontWeight: "bold",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "10px",
       textDecoration: "none",
       color: "#fff",
     },
   },
-})
+});
+
 
 export const Logo = styled(Link)({
   textDecoration: "none",
@@ -50,12 +60,12 @@ export const Input = styled(OutlinedInput)({
   height: '35px',
   marginBottom: '1rem',
   border: 'none',
-  background: '#0d383f',
+  background: '#099ee4',
   color: '#fff',
 
   '&:focus': {
     border: 'none',
-    background: '#0d383f',
+    background: '#099ee4',
     color: '#fff'
   }
 })

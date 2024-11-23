@@ -34,7 +34,7 @@ export const Sidebar = styled('nav')({
       padding: "0.5rem",
       border: "none",
       borderRadius: "2px",
-      backgroundColor: "#0d383f",
+      backgroundColor: "#099ee4",
       color: "#f4f4f4",
       cursor: "pointer",
     }

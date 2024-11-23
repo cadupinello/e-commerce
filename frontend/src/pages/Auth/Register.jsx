@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { register, reset } from '../../slices/Auth'
 
+import * as Styled from './styled'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -13,7 +17,7 @@ const Register = () => {
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
   const [answer, setAnswer] = useState('')
-  console.log('teste')
+
   const dispatch = useDispatch();
 
   const { isLoading, isError } = useSelector(state => state.auth);
@@ -38,96 +42,108 @@ const Register = () => {
     dispatch(reset())
   }, [dispatch])
 
-  const messageError = (isError) => {
+  useEffect(() => {
     if (isError) {
-      return (
-        <div className="alert alert-danger" role="alert">
-          {isError}
-        </div>
-      )
+      toast.error('Erro ao cadastrar o usuário', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        progress: undefined,
+      });
+      dispatch(reset());
     }
-  }
+  }, [isError, dispatch]);
 
   return (
     <>
       <Layout>
-        <div className='AlignDivs'>
-          <h3 className='m-3 title'>Register</h3>
-          <h3 className='subtitle'>Crie sua conta</h3>
-          <form onSubmit={handleSubmit} className='form-control' style={{ maxWidth: "500px" }}>
-            <div className='form-group mb-3'>
-              <label htmlFor='name'>Nome</label>
-              <input
-                type='text'
-                id='name'
-                className='form-control'
-                placeholder='Digite seu nome'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3 mb-3'>
-              <label htmlFor='email'>Email</label>
-              <input
-                type='email'
-                id='email'
-                className='form-control'
-                placeholder='Digite seu email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3'>
-              <label htmlFor='password'>Senha</label>
-              <input
-                type='password'
-                id='password'
-                className='form-control'
-                placeholder='Digite sua senha'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3'>
-              <label htmlFor='telefone'>Telefone</label>
-              <input
-                type='text'
-                id='telefone'
-                className='form-control'
-                placeholder='Digite seu telefone'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3'>
-              <label htmlFor='endereco'>Endereço</label>
-              <input
-                type='text'
-                id='endereco'
-                className='form-control'
-                placeholder='Digite seu endereço'
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </div>
-            <div className='form-group mb-3'>
-              <label htmlFor='answer'>Pergunta de segurança</label>
-              <input
-                type='text'
-                id='pergunta'
-                className='form-control'
-                placeholder='Qual é o seu jogo favorito?'
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-              />
-            </div>
-            {messageError(isError)}
-            {!isLoading ? <button type="submit" msg="Cadastrar" color="info" /> :
-              <button disabled msg="Cadastrando..." color="info" />
-            }
-          </form>
-        </div>
+        <Styled.Container>
+          <Styled.Content>
+            <h4>Cadastrar</h4>
+            <Styled.Form>
+              <Styled.FormControl>
+                <label htmlFor='name'>Nome</label>
+                <Styled.Input
+                  type='name'
+                  id='name'
+                  placeholder='Digite seu nome'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Styled.FormControl>
+              <Styled.FormControl>
+                <label htmlFor='email'>Email</label>
+                <Styled.Input
+                  type='email'
+                  id='email'
+                  placeholder='Digite seu email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Styled.FormControl>
+              <Styled.FormControl>
+                <label htmlFor='password'>Senha</label>
+                <Styled.Input
+                  type='password'
+                  id='password'
+                  placeholder='Digite sua senha'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Styled.FormControl>
+              <Styled.FormContainer>
+
+                <Styled.FormControl>
+                  <label htmlFor='phone'>Telefone</label>
+                  <Styled.Input
+                    type='text'
+                    id='phone'
+                    placeholder='Digite seu telefone'
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </Styled.FormControl>
+                <Styled.FormControl>
+                  <label htmlFor='address'>Endereço</label>
+                  <Styled.Input
+                    type='text'
+                    id='address'
+                    placeholder='Digite seu endereço'
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </Styled.FormControl>
+              </Styled.FormContainer>
+
+              <Styled.FormControl>
+                <label htmlFor='answer'>Pergunta de segurança</label>
+                <Styled.Input
+                  type='text'
+                  id='answer'
+                  placeholder='Qual é o seu jogo favorito'
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                />
+              </Styled.FormControl>
+              <Styled.Button
+                type="submit"
+                onClick={handleSubmit}
+                disabled={isLoading}
+                color='primary'
+                variant="contained"
+              >
+                {isLoading ? "Carregando..." : "Cadastrar"}
+              </Styled.Button>
+            </Styled.Form>
+            <Styled.LinkHeader to="/login">
+              ENTRAR
+            </Styled.LinkHeader>
+          </Styled.Content>
+        </Styled.Container>
       </Layout>
+      <ToastContainer />
     </>
   )
 }
