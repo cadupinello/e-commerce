@@ -3,6 +3,8 @@ import { Modal } from 'antd'
 
 import Layout from '../../components/layout';
 import MenuDashboard from '../../components/menuDashboard';
+import * as Styled from './styled'
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories, register, update, deleteCategory, resetMessage } from '../../slices/category';
@@ -16,13 +18,10 @@ const Category = () => {
     name: ""
   });
 
-  const { user } = useSelector((state) => state.auth);
-
   const dispatch = useDispatch();
 
   const { categories, isError, message, isLoading } = useSelector(state => state.category);
 
-  // get all categories
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -34,7 +33,6 @@ const Category = () => {
   }
 
 
-  // create new category
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -56,7 +54,6 @@ const Category = () => {
     }
   }
 
-  // update category
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -83,7 +80,6 @@ const Category = () => {
     resetComponentMessage();
   }
 
-  // modal
   const showModal = (category) => {
     setIsVisible(true);
     setSelected(category);
@@ -99,54 +95,58 @@ const Category = () => {
 
   return (
     <Layout>
-      <div className="container-fluid m-3 p-3 dashboard">
-        <div className="row">
+      <Styled.Container>
+        <h4>Painel Administrativo</h4>
+        <span>Gerencie seus produtos e categorias, além de visualizar seus dados pessoais</span>
+        <hr />
+        <Styled.Content>
           <MenuDashboard />
-          <div className='col-md-9'>
-            <h1>Adicionar nova categoria</h1>
-            <div className='p-3 w-50'>
-              <Form
-                handleSubmit={handleSubmit}
-                value={categoryName}
-                setValue={setCategoryName}
-                placeholder="Nome da categoria"
-              />
-              {isLoading && <p>Carregando...</p>}
-              {message &&
-                <p>{message}</p>
-              }
-            </div>
-            <div className="w-75">
-              <table className='table'>
-                <thead>
-                  <tr>
-                    <th scope='col'>Nome</th>
-                    <th scope='col'>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categories?.map((category) => (
-                    <tr key={category._id}>
-                      <td>{category.name}</td>
-                      <td>
-                        <button
-                          className='btn btn-outline-primary btn-sm me-2'
-                          onClick={() => showModal(category)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          className='btn btn-outline-danger btn-sm'
-                          onClick={() => handleDelete(category._id)}
-                        >
-                          Excluir
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className='main'>
+            <h4>Adicionar nova categoria</h4>
+            <Form
+              handleSubmit={handleSubmit}
+              value={categoryName}
+              setValue={setCategoryName}
+              placeholder="Nome da categoria"
+            />
+            {isLoading && <p>Carregando...</p>}
+            {message &&
+              <p>{message}</p>
+            }
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nome</TableCell>
+                  <TableCell>Ações</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {categories?.map((category) => (
+                  <TableRow key={category._id}>
+                    <TableCell>{category.name}</TableCell>
+                    <TableCell>
+                      <Button
+                        style={{ marginRight: 10 }}
+                        variant='outlined'
+                        size='small'
+                        color='primary'
+                        onClick={() => showModal(category)}
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant='outlined'
+                        size='small'
+                        color='error'
+                        onClick={() => handleDelete(category._id)}
+                      >
+                        Excluir
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
             <Modal
               title="Editar categoria"
               open={isVisible}
@@ -159,6 +159,7 @@ const Category = () => {
               >
                 <input type="text"
                   className='form-control'
+                  style={{ marginRight: 10 }}
                   value={selected.name}
                   onChange={(e) => setSelected({ ...selected, name: e.target.value })}
                 />
@@ -166,8 +167,8 @@ const Category = () => {
               </form>
             </Modal>
           </div>
-        </div>
-      </div>
+        </Styled.Content>
+      </Styled.Container>
     </Layout>
   )
 }

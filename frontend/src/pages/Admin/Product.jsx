@@ -7,6 +7,8 @@ import { registerProduct, resetMessage } from '../../slices/Product';
 import { Select } from 'antd';
 const { Option } = Select;
 import { useNavigate } from 'react-router-dom';
+import * as Styled from './styled'
+import { Button, FormControl } from '@mui/material';
 
 const Product = () => {
   const [category, setCategory] = useState('');
@@ -61,16 +63,16 @@ const Product = () => {
 
   return (
     <Layout>
-      <div className="container-fluid m-3 p-3">
-        <div className="row">
-          <div className="col-md-3">
-            <MenuDashboard />
-          </div>
-          <div className="col-md-9">
-            <h1>Criar Produtos</h1>
-            <div className="m-1 w-75">
+      <Styled.Container>
+        <h4>Painel Administrativo</h4>
+        <span>Gerencie seus produtos e categorias, além de visualizar seus dados pessoais</span>
+        <hr />
+        <Styled.Content>
+          <MenuDashboard />
+          <div className='main'>
+            <h4>Criar Produtos</h4>
+            <Styled.Form>
               <Select
-                bordered={false}
                 placeholder="Selecione uma categoria"
                 size="large"
                 showSearch
@@ -83,10 +85,11 @@ const Product = () => {
                   </Option>
                 ))}
               </Select>
-              <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
+              <FormControl>
+                <label>
                   {photo ? photo.name : "Escolha uma foto"}
                   <input
+                    className='file'
                     type="file"
                     name="photo"
                     accept="image/*"
@@ -94,8 +97,8 @@ const Product = () => {
                     hidden
                   />
                 </label>
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <div>
                 {photo && (
                   <div className="text-center">
                     <img
@@ -107,7 +110,7 @@ const Product = () => {
                   </div>
                 )}
               </div>
-              <div className="mb-3">
+              <FormControl>
                 <input
                   type="text"
                   value={name}
@@ -115,8 +118,8 @@ const Product = () => {
                   className='form-control'
                   onChange={(e) => setName(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <FormControl>
                 <textarea
                   type="text"
                   value={description}
@@ -124,8 +127,8 @@ const Product = () => {
                   className='form-control'
                   onChange={(e) => setDescription(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <FormControl>
                 <input
                   type="number"
                   value={price}
@@ -133,8 +136,8 @@ const Product = () => {
                   className='form-control'
                   onChange={(e) => setPrice(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <FormControl>
                 <input
                   type="number"
                   value={quantity}
@@ -142,10 +145,9 @@ const Product = () => {
                   className='form-control'
                   onChange={(e) => setQuantity(e.target.value)}
                 />
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <FormControl>
                 <Select
-                  bordered={false}
                   placeholder="Selecione o estado do produto"
                   size="large"
                   showSearch
@@ -155,24 +157,29 @@ const Product = () => {
                   <Option value={true}>Ativo</Option>
                   <Option value={false}>Inativo</Option>
                 </Select>
-              </div>
-              <div className="mb-3">
+              </FormControl>
+              <div>
                 {!isError ? (
                   <p className='text-success'>{message}</p>
                 ) : (
                   <p className='text-danger'>{message}</p>
                 )
                 }
-                {isLoading ? (
-                  <button className='btn btn-primary' disabled>Cadastrando...</button>
-                ) : (
-                  <button type='submit' className='btn btn-outline-primary' onClick={handleCreate}>Cadastrar</button>
-                )}
+                <Button
+                  variant='contained'
+                  color='primary'
+                  type='submit'
+                  size='medium'
+                  disabled={isLoading}
+                  onClick={handleCreate}
+                >
+                  {isLoading ? "Cadastrando..." : "Cadastrar"}
+                </Button>
               </div>
-            </div>
+            </Styled.Form>
           </div>
-        </div>
-      </div>
+        </Styled.Content>
+      </Styled.Container>
     </Layout>
   )
 }

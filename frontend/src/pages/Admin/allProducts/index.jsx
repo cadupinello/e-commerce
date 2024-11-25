@@ -5,6 +5,9 @@ import { getAllProducts } from '../../../slices/Product';
 import MenuDashboard from '../../../components/menuDashboard';
 import { Link } from 'react-router-dom';
 import { api } from '../../../utils/Config';
+import * as Styled from './styled'
+import { Table, TableBody, TableHead, TableRow, TableCell } from '@mui/material';
+import EmptyImg from '../../../assets/imgEmpty.jpg';
 
 const AllProducts = () => {
 
@@ -19,28 +22,44 @@ const AllProducts = () => {
   return (
     <>
       <Layout>
-        <div className="row">
-          <div className="col-md-3 mt-5">
+        <Styled.Container>
+          <h4>Painel Administrativo</h4>
+          <span>Gerencie seus produtos e categorias, além de visualizar seus dados pessoais</span>
+          <hr />
+          <Styled.Content>
             <MenuDashboard />
-          </div>
-          <div className="col-md-9 mt-1">
-            <h1 className='text-center'>All Products List</h1>
-            <div className="d-flex flex-wrap justify-content-center">
+            <div className='main'>
+              <h4>Todos os Produtos</h4>
               {isLoading && <div className="spinner-border text-primary d-flex justify-content-center" role="status"></div>}
-              {products.map((p) => (
-                <Link key={p._id} to={`/dashboard/admin/product/${p.slug}`} className="product-link">
-                  <div className="card m-2" style={{ width: "15rem" }}>
-                    <img src={`${api}/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
-                    <div className="card-body">
-                      <h5 className="card-title">{p.name}</h5>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Foto</TableCell>
+                    <TableCell>Nome</TableCell>
+                    <TableCell>Preço</TableCell>
+                    <TableCell>Categoria</TableCell>
+                    <TableCell>Quantidade</TableCell>
+                    <TableCell>Envio</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {products.map((product) => (
+                    <TableRow key={product._id}>
+                      <TableCell>
+                        <img src={product.photo ? photo : EmptyImg} alt={product.name} style={{ width: '50px' }} />
+                      </TableCell>
+                      <TableCell><Link to={`/dashboard/admin/product/${product.slug}`}>{product.name}</Link></TableCell>
+                      <TableCell>{product?.price?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</TableCell>
+                      <TableCell>{product.category?.name}</TableCell>
+                      <TableCell>{product.quantity}</TableCell>
+                      <TableCell>{product?.shipping === true ? "Sim" : "Não"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
-          </div>
-        </div>
-
+          </Styled.Content>
+        </Styled.Container>
       </Layout>
     </>
   )
