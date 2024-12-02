@@ -2,115 +2,127 @@ import { api, requestConfig, reqConfig } from '../utils/Config';
 import axios from 'axios';
 
 export const getAllProducts = async () => {
-  try {
-    const res = await axios.get(`${api}/product/get-products`)
-    .then(res => res.data)
-    .catch(err => err.response.data);
+	try {
+		const res = await axios.get(`${api}/product/get-products`)
+			.then(res => res.data)
+			.catch(err => err.response.data);
 
-    return res;
-  
-  }catch(err) {
-    console.log(err);
-  }
+		return res;
+
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export const getSingleProducts = async (slug) => {
-  try {
-    const res = await axios.get(`${api}/product/get-product/${slug}`)
-    .then(res => res.data)
-    .catch(err => err.response.data);
-  
-    return res;
+	try {
+		const res = await axios.get(`${api}/product/get-product/${slug}`)
+			.then(res => res.data)
+			.catch(err => err.response.data);
 
-  }catch(err) {
-    console.log(err);
-  }
+		return res;
+
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export const registerProduct = async (data, token) => {
-  const config = reqConfig(token);
+	const config = reqConfig(token);
 
-  try {
-    
-    const res = await axios.post(`${api}/product/create-product`, data, config)
-    .then(res => res.data)
-    .catch(err => err.response.data);
-    
-    return res;
-      
-    }catch(error){
-      console.log(error)
-    }
+	try {
+
+		const res = await axios.post(`${api}/product/create-product`, data, config)
+			.then(res => res.data)
+			.catch(err => err.response.data);
+
+		return res;
+
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 export const updateProduct = async (data, token) => {
-  const id = data.get('id');
-  const config = reqConfig(token);
+	const id = data.get('id');
+	const config = reqConfig(token);
 
-  try {
-    
-    const res = await axios.put(`${api}/product/update-product/${id}`, data, config)
-    .then(res => res.data)
-    .catch(err => err.response.data);
+	try {
 
-    return res;
+		const res = await axios.put(`${api}/product/update-product/${id}`, data, config)
+			.then(res => res.data)
+			.catch(err => err.response.data);
 
-  }catch(error){
-    console.log(error)
-  }
+		return res;
+
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 export const deleteProduct = async (id, token) => {
-  const config = reqConfig(token);
-  
-  try {
-    
-    const res = await axios.delete(`${api}/product/delete-product/${id}`, config)
-    .then(res => res.data)
-    .catch(err => err.response.data);
-    
-    return res;
+	const config = reqConfig(token);
 
-  }catch(error){
-    console.log(error)
-  }
+	try {
+
+		const res = await axios.delete(`${api}/product/delete-product/${id}`, config)
+			.then(res => res.data)
+			.catch(err => err.response.data);
+
+		return res;
+
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 export const searchProducts = async (search) => {
-  console.log(search)
-  try {
-    const res = await axios.get(`${api}/product/search?q=${search}`)
-    .then(res => res.data)
-    .catch(err => err.response.data);
-    console.log(res)
+	console.log(search)
+	try {
+		const res = await axios.get(`${api}/product/search?q=${search}`)
+			.then(res => res.data)
+			.catch(err => err.response.data);
+		console.log(res)
 
 
-    return res;
-  }catch(err) {
-    console.log(err);
-  }
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export const similarProducts = async (pid, cid) => {
-  try {
-    const res = await axios.get(`${api}/product/related-products/${pid}/${cid}`)
-    .then(res => res.data)
-    .catch(err => err.response.data);
+	try {
+		const res = await axios.get(`${api}/product/related-products/${pid}/${cid}`)
+			.then(res => res.data)
+			.catch(err => err.response.data);
 
-    return res;
-  }catch(err) {
-    console.log(err);
-  }
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+export const getProductFilters = async (data) => {
+	try {
+		const res = await axios.post(`${api}/product/product-filters`, data)
+			.then(res => res.data)
+			.catch(err => err.response.data);
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export const productServices = {
-  registerProduct,
-  getAllProducts,
-  getSingleProducts,
-  updateProduct,
-  deleteProduct,
-  searchProducts,
-  similarProducts
+	registerProduct,
+	getAllProducts,
+	getSingleProducts,
+	updateProduct,
+	deleteProduct,
+	searchProducts,
+	similarProducts,
+	getProductFilters
 }
 
 export default productServices;

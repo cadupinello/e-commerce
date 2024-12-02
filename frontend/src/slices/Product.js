@@ -2,210 +2,236 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import productServices from '../services/Product';
 
 const initialState = {
-  products: [],
-  product: {},
-  singleProduct: [],
-  isLoading: false,
-  isError: false,
-  isSuccess: false,
-  message: "",
+	products: [],
+	product: {},
+	singleProduct: [],
+	isLoading: false,
+	isError: false,
+	isSuccess: false,
+	message: "",
 }
 
+export const filterProducts = createAsyncThunk(
+	"/product/product-filters",
+
+	async (categoryId, price) => {
+
+		const data = await productServices.getProductFilters(categoryId, price)
+
+		return data;
+	}
+)
+
 export const getAllProducts = createAsyncThunk(
-  "products/getAllProducts",
+	"products/getAllProducts",
 
-  async () => {
+	async () => {
 
-    const data = await productServices.getAllProducts();
+		const data = await productServices.getAllProducts();
 
-    return data;
-  }
+		return data;
+	}
 )
 
 export const getSingleProducts = createAsyncThunk(
-  "products/getSingleProducts",
+	"products/getSingleProducts",
 
-  async (slug) => {
-    
-    const data = await productServices.getSingleProducts(slug);
+	async (slug) => {
 
-    return data;
-  }
+		const data = await productServices.getSingleProducts(slug);
+
+		return data;
+	}
 )
 
 export const registerProduct = createAsyncThunk(
-  "product/register",
+	"product/register",
 
-  async (product, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
+	async (product, thunkAPI) => {
+		const token = thunkAPI.getState().auth.user.token;
 
-    const data = await productServices.registerProduct(product, token)
+		const data = await productServices.registerProduct(product, token)
 
-    console.log(data.status)
+		console.log(data.status)
 
-    if(data.status === "error") {
-      return thunkAPI.rejectWithValue(data.message);
-    }
+		if (data.status === "error") {
+			return thunkAPI.rejectWithValue(data.message);
+		}
 
-    return data;
-  }
+		return data;
+	}
 )
 
 export const updateProduct = createAsyncThunk(
-  "product/update",
+	"product/update",
 
-  async (product, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
+	async (product, thunkAPI) => {
+		const token = thunkAPI.getState().auth.user.token;
 
-    const data = await productServices.updateProduct(product, token)
+		const data = await productServices.updateProduct(product, token)
 
-    if(data.status === "error") {
-      return thunkAPI.rejectWithValue(data.message);
-    }
+		if (data.status === "error") {
+			return thunkAPI.rejectWithValue(data.message);
+		}
 
-    return data;
-  }
+		return data;
+	}
 )
 
 export const deleteProduct = createAsyncThunk(
-  "product/delete",
+	"product/delete",
 
-  async (id, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user.token;
+	async (id, thunkAPI) => {
+		const token = thunkAPI.getState().auth.user.token;
 
-    const data = await productServices.deleteProduct(id, token)
+		const data = await productServices.deleteProduct(id, token)
 
-    return data;
-  }
+		return data;
+	}
 )
 
 export const searchProduct = createAsyncThunk(
-  "product/search",
+	"product/search",
 
-  async (search, thunkAPI) => {
-    console.log(search)
+	async (search, thunkAPI) => {
+		console.log(search)
 
-    const data = await productServices.searchProducts(search)
+		const data = await productServices.searchProducts(search)
 
-    return data;  
-  }
+		return data;
+	}
 )
 
 export const getRelatedProducts = createAsyncThunk(
-  "product/related-products",
+	"product/related-products",
 
-  async (pid, cid) => {
-    const data = await productServices.similarProducts(pid, cid)
+	async (pid, cid) => {
+		const data = await productServices.similarProducts(pid, cid)
 
-    return data;
-  }
+		return data;
+	}
 )
 
 export const productSlice = createSlice({
-  name: "product",
-  initialState,
-  reducers: {
-    resetMessage: (state) => {
-      state.message = "";
-    }
-  },
-  extraReducers: (builder) => {
-    builder
-    .addCase(registerProduct.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(registerProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.product = action.payload;
-      state.products.unshift(state.product);
-      state.message = "Produto criado com sucesso";
-    })
-    .addCase(registerProduct.rejected, (state, action) => {
-      console.log(action.payload);
-      state.isLoading = false;
-      state.isError = true;
-      state.isSuccess = false;
-      state.message = action.payload;
-    })
-    .addCase(updateProduct.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(updateProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.products.map((product) => {
-        if(product._id === action.payload.product._id) {
-          return (product.name = action.payload.product.name);
-        }
-        return product;
-      })
-      state.message = "Produto atualizado com sucesso";
-    })
-    .addCase(updateProduct.rejected, (state, action) => {
-      console.log(action.payload);
-      state.isLoading = false;
-      state.isError = true;
-      state.isSuccess = false;
-      state.message = action.payload;
-    })
-    .addCase(getAllProducts.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(getAllProducts.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.products = action.payload.products;
-    })
-    .addCase(getSingleProducts.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(getSingleProducts.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.singleProduct = action.payload.product;
-    })
-    .addCase(deleteProduct.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(deleteProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.products = state.products.filter((product) => product._id !== action.payload.id);
-      state.message = "Produto removido com sucesso";
-    })
-    .addCase(searchProduct.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(searchProduct.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.isError = null;
-      state.products = action.payload.products;
-    })
-    .addCase(getRelatedProducts.pending, (state) => {
-      state.isLoading = true;
-      state.isError = false;
-      state.isSuccess = false;
-    })
-    .addCase(getRelatedProducts.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.products = action.payload.products;
-    })
-  },
+	name: "product",
+	initialState,
+	reducers: {
+		resetMessage: (state) => {
+			state.message = "";
+		}
+	},
+	extraReducers: (builder) => {
+		builder
+			.addCase(filterProducts.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(filterProducts.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.products = action.payload.products;
+			})
+			.addCase(filterProducts.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload || "Erro ao filtrar produtos.";
+			})
+			.addCase(registerProduct.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(registerProduct.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.product = action.payload;
+				state.products.unshift(state.product);
+				state.message = "Produto criado com sucesso";
+			})
+			.addCase(registerProduct.rejected, (state, action) => {
+				console.log(action.payload);
+				state.isLoading = false;
+				state.isError = true;
+				state.isSuccess = false;
+				state.message = action.payload;
+			})
+			.addCase(updateProduct.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(updateProduct.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.products.map((product) => {
+					if (product._id === action.payload.product._id) {
+						return (product.name = action.payload.product.name);
+					}
+					return product;
+				})
+				state.message = "Produto atualizado com sucesso";
+			})
+			.addCase(updateProduct.rejected, (state, action) => {
+				console.log(action.payload);
+				state.isLoading = false;
+				state.isError = true;
+				state.isSuccess = false;
+				state.message = action.payload;
+			})
+			.addCase(getAllProducts.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(getAllProducts.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.products = action.payload.products;
+			})
+			.addCase(getSingleProducts.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(getSingleProducts.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.singleProduct = action.payload.product;
+			})
+			.addCase(deleteProduct.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(deleteProduct.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.products = state.products.filter((product) => product._id !== action.payload.id);
+				state.message = "Produto removido com sucesso";
+			})
+			.addCase(searchProduct.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(searchProduct.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.isError = null;
+				state.products = action.payload.products;
+			})
+			.addCase(getRelatedProducts.pending, (state) => {
+				state.isLoading = true;
+				state.isError = false;
+				state.isSuccess = false;
+			})
+			.addCase(getRelatedProducts.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.products = action.payload.products;
+			})
+	},
 })
 
 export const { resetMessage } = productSlice.actions;

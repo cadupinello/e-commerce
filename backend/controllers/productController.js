@@ -1,12 +1,13 @@
 import productModel from "../models/productModel.js"
 import fs from "fs";
 import slugify from 'slugify';
+import { Buffer } from "buffer";
 
 export const createProduct = async (req, res) => {
   try {
 
-    const { name, price, description, category, quantity, shipping } = req.body;
-    console.log(name, price, description, category, quantity, shipping);
+    const { name, price, description, category, quantity, shipping, photo } = req.body;
+    console.log(name, price, description, category, quantity, shipping, photo);
 
     // Validações
     if (!name || !price || !description || !category || !quantity) {
@@ -16,6 +17,17 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    const matches = photo.match(/^data:([A-Za-z-+/]+);base64,(.*)$/);
+    if (!matches) {
+      return res.status(400).json({
+        status: "error",
+        message: "Formato de imagem inválido",
+      })
+    }
+
+    const buffer = Buffer.from(matches[2], "base64");
+    const contentType = `image/${matches[1]}`;
+
     // Criação do produto
     const product = await productModel.create({
       name,
@@ -24,7 +36,11 @@ export const createProduct = async (req, res) => {
       category,
       quantity,
       shipping,
-      slug: slugify(name, { lower: true, strict: true })
+      slug: slugify(name, { lower: true, strict: true }),
+      photo: {
+        data: buffer,
+        contentType: contentType
+      }
     });
 
     await product.save();
@@ -203,13 +219,25 @@ export const updateProduct = async (req, res) => {
 }
 
 export const productFiltersController = async (req, res) => {
+  console.log(req.body);
   try {
-    const { checked, radio } = req.body;
+    const { categoryId, price } = req.body;
 
     let args = {};
 
-    if (checked.length > 0) args.category = checked;
-    if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] };
+    if (categoryId) args.category = categoryId;
+    if (price) {
+      const priceRange = price?.split('-');
+      if (priceRange?.length === 2) {
+        args.price = { $gte: parseFloat(priceRange[0]), $lte: parseFloat(priceRange[1]) };
+      } else {
+        return res.status(400).send({
+          success: false,
+          message: "Invalid price format. Please use 'min-max' format."
+        });
+      }
+    }
+
     const products = await productModel.find(args);
     res.status(200).send({
       success: true,
@@ -223,7 +251,6 @@ export const productFiltersController = async (req, res) => {
       message: "Error in Filters",
     });
   }
-
 }
 
 export const productCountController = async (req, res) => {
